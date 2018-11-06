@@ -59,12 +59,12 @@ int main()
     yGreen = false;
     yPurple = true;
     yWhite = false;
-    dRed = 8;
-    dBlue = 2;
+    dRed = 3;
+    dBlue = 5;
     dYellow = 3;
-    dGreen = 1;
-    dPurple = 5;
-    dWhite = 6;
+    dGreen = 2;
+    dPurple = 3;
+    dWhite = 4;
     
     //Random Seed
     srand(static_cast<int>(seedval));
@@ -341,12 +341,12 @@ int main()
         //CPU's turn
 //        turn = false;
         //Lean towards an intelligent choice. (Make difficulties??)
+        
+        //
 
 
         //Distribute Dice. Equals 1 + however many adjacent territories CPU owns
 
-
-        //Check if the game is won/lost, if not, replay game loop
 
         //
         //</editor-fold>
@@ -451,11 +451,11 @@ void defend(char attckr, bool red, bool white, bool green, bool yellow, bool pur
     
     
     (r == true)?printf("%c[1;30;42mR. Red    \n", 27):printf("%c[1;30;41mR. Red    \n", 27);
-    (w == true)?printf("%c[1;30;42mW. White    \n", 27):printf("%c[1;30;41mW. White    \n", 27);
-    (g == true)?printf("%c[1;30;42mG. Green    \n", 27):printf("%c[1;30;41mG. Green    \n", 27);
-    (y == true)?printf("%c[1;30;42mY. Yellow    \n", 27):printf("%c[1;30;41mY. Yellow    \n", 27);
-    (p == true)?printf("%c[1;30;42mP. Purple    \n", 27):printf("%c[1;30;41mP. Purple    \n", 27);
-    (b == true)?printf("%c[1;30;42mB. Blue    \n", 27):printf("%c[1;30;41mB. Blue    \n", 27);
+    (w == true)?printf("%c[1;30;42mW. White  \n", 27):printf("%c[1;30;41mW. White  \n", 27);
+    (g == true)?printf("%c[1;30;42mG. Green  \n", 27):printf("%c[1;30;41mG. Green  \n", 27);
+    (y == true)?printf("%c[1;30;42mY. Yellow \n", 27):printf("%c[1;30;41mY. Yellow \n", 27);
+    (p == true)?printf("%c[1;30;42mP. Purple \n", 27):printf("%c[1;30;41mP. Purple \n", 27);
+    (b == true)?printf("%c[1;30;42mB. Blue   \n", 27):printf("%c[1;30;41mB. Blue   \n", 27);
     printf("%c[0m", 27);
 }
 
@@ -525,7 +525,7 @@ bool valDef(char attckr, char dfnder, bool red, bool white, bool green, bool yel
     if(valid == true)
     {
         cout<<"\nAttacking...\n";
-        cout<<"=================\n";
+        cout<<"===================\n";
     }else if(valid == false)
     {
         cout<<"\nYou can only attack adjacent enemy territories!\n";
