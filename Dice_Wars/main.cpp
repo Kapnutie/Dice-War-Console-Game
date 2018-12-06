@@ -17,6 +17,7 @@ using namespace std;
 
 //<editor-fold defaultstate="collapsed" desc="Function Prototypes">
 //
+void printBoard(string, bool, bool, bool, bool, bool, bool, int, int, int, int, int, int);
 void attack(bool, bool, bool, bool, bool, bool);//Attack with Prompt
 void defend(char, bool, bool, bool, bool, bool, bool);//Defend with Prompt
 bool valAtt(char, bool, bool, bool, bool, bool, bool);//Validate Attack
@@ -52,6 +53,10 @@ int main()
     int turnCnt = 0;//Turn count
     bool gameovr = false;//Game Over if adjcnts ever equals 6 (Meaning all territories are owned by either player)
     bool attWon;
+    int SIZE = 6;
+    char cpuVldA[SIZE];
+    char cpuVldD[SIZE];
+    int choices;
     
     yRed = true;
     yBlue = false;
@@ -85,43 +90,8 @@ int main()
     
     do
     {
-        //<editor-fold defaultstate="collapsed" desc="GAME MAP">
-        
-        //Territories
-        //41-red, 42-green, 43-yellow, 44-blue, 45-purple, 47-white
-        cout<<"\n\nYou: "<<plyrOne<<endl;
-        printf("%c[0;34;46m^ ^    ^^^   ^    ^^^     ^^ ^    ^^^       ^^ ^       ^\n", 27); // waves Background
-        printf("%c[0;34;46m^^        ^^^",27);printf("%c[41m          ",27);printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27);// waves Background
-        printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m          ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mYou    ",27):printf("%c[1;30;41mCPU    ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^     ^^    ^     ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mDice:%d   ",27, dRed):printf("%c[1;30;41mDice:%d   ",27, dRed);printf("%c[47m            ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m            ",27);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^     ^^^",27);printf("%c[41m              ",27);printf("%c[47m                     ",27);printf("%c[0;34;46m^^^      ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                  ",27);printf("%c[0;34;46m^^^     ^^    ^^\n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^",27);printf("%c[42m             ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mYou      ",27):printf("%c[1;30;47mCPU      ",27);printf("%c[0;34;46m^^^     ^ ^     ^^^  \n", 27); // waves Background
-        printf("%c[0;34;46m^^      ",27);printf("%c[42m      ",27);(yGreen==true)?printf("%c[1;30;42mYou     ",27):printf("%c[1;30;42mCPU     ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mDice:%d   ",27, dWhite):printf("%c[47mDice:%d   ",27, dWhite);printf("%c[0;34;46m^^^      ^     ^^^   \n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^",27);printf("%c[42m     ",27);(yGreen==true)?printf("%c[1;30;42mDice:%d  ",27, dGreen):printf("%c[1;30;42mDice:%d  ",27, dGreen);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^^^    \n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^^^  \n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                      ",27);printf("%c[0;34;46m^^^     ^^  \n", 27); // waves Background
-        printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m       ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^       \n", 27); // waves Background                                                                                                                                       //Well this got a little.. out of hand...
-        printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^   \n", 27); // waves Background
-        printf("%c[0;34;46m^^     ^^^      ^^^",27);printf("%c[43m        ",27);printf("%c[45m          ",27);printf("%c[0;34;46m^^^  ^^    ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mYou    ",27):printf("%c[1;30;43mCPU    ",27);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;45mYou    ",27):printf("%c[1;30;45mCPU    ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mDice:%d ",27, dYellow):printf("%c[1;30;43mDice:%d ",27, dYellow);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;5mDice:%d  ",27, dPurple):printf("%c[1;30;45mDice:%d  ",27, dPurple);printf("%c[0;34;46m^   ^^   ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^       ^    ^^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m    ^^    ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^       ^^       ^^^",27);printf("%c[43m      ",27);printf("%c[45m         ",27);printf("%c[0;34;46m^^    ^^    ^^^     \n", 27); // waves Background
-        printf("%c[0;34;46m^^     ^         ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^ \n", 27); // waves Background
-        printf("%c[0;34;46m^^               ^^^",27);printf("%c[43m           ",27);printf("%c[44m           ",27);printf("%c[0;34;46m^^^     ^^   ^\n", 27); // waves Background
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27); 
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                   ",27);(yBlue==true)?printf("%c[1;30;44mYou                   ",27):printf("%c[1;30;44mCPU                   ",27);printf("%c[0;34;46m^^^ \n", 27);
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                 ",27);(yBlue==true)?printf("%c[1;30;44mDice:%d                ",27, dBlue):printf("%c[1;30;44mDice:%d                ",27, dBlue);printf("%c[0;34;46m^^^   \n", 27);
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
-        printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
-        printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
-        printf("%c[0m", 27);
-        //</editor-fold>
+        //Print Board/Map
+        printBoard(plyrOne, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
 
         //<editor-fold defaultstate="collapsed" desc="User Input Prompts">
         //======================================================================
@@ -179,7 +149,7 @@ int main()
         
         if(attWon == true)
         {
-            cout<<"\nAttacker Won!\n";
+            (turn == true)?cout<<"Your Attack Won!\n":cout<<"CPU Attack Won!\n";
             cout<<"=================\n";
 
             //Attacking territory loses all but 1 dice
@@ -270,7 +240,7 @@ int main()
                     break;
             }
 
-            cout<<"\nAttack Failed!\n";
+            (turn == true)?cout<<"Your Attack Failed!\n":cout<<"CPU Attack Failed!\n";//Output the results
         }
 
         //======================================================================
@@ -281,10 +251,12 @@ int main()
 
         //Get the count of adjacent territories of the current player
         adjcnts = adjCnt(turn, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
-        if(adjcnts == 6)gameovr = true;
+        if(adjcnts == 6)gameovr = true;//Check if the game is actually over
         cout<<"\nDistributing Dice...\n";
         cout<<"====================\n";
         //Distribute that many dice randomly across the territories they own
+        
+        //Copy this and revert 'yTerr' for the CPU's turn.!!!}{}{}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{|}{}{
         while(adjcnts != 0)
         {
             random = rand() % 6 + 1;
@@ -339,14 +311,357 @@ int main()
         //
 
         //CPU's turn
-//        turn = false;
-        //Lean towards an intelligent choice. (Make difficulties??)
+        cout<<"\n\n==========================\n";
+        cout<<"COMPUTERS TURN!\n";
+        cout<<"==========================\n";
+        turn = false;
         
-        //
+        //Make CPU choose a random valid attacking territory
+        
+        //Fill CPU's Valid attacking territory array
+        for(int i = 0; i < SIZE; i++)
+        {
+            switch(i)
+            {
+                case 0:
+                    if(yRed == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yRed == false)
+                    {
+                        if(yGreen == true || yWhite == true)
+                        {
+                            cpuVldA[i] = 'R';
+                        }
+                    }
+                    break;
+                case 1:
+                    if(yWhite == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yWhite == false)
+                    {
+                        if(yRed == true || yGreen == true || yYellow == true || yPurple == true)
+                        {
+                            cpuVldA[i] = 'W';
+                        }
+                    }
+                    break;
+                case 2:
+                    if(yGreen == true)
+                    {
+                        cpuVldA[i-1] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yGreen == false)
+                    {
+                        if(yRed == true || yWhite == true || yYellow == true)
+                        {
+                            cpuVldA[i-1] = 'G';
+                        }
+                    }
+                    break;
+                case 3:
+                    if(yYellow == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yYellow == false)
+                    {
+                        if(yGreen == true || yWhite == true || yPurple == true || yBlue == true)
+                        {
+                            cpuVldA[i] = 'Y';
+                        }
+                    }
+                    break;
+                case 4:
+                    if(yPurple == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yPurple == false)
+                    {
+                        if(yWhite == true || yYellow == true || yBlue == true)
+                        {
+                            cpuVldA[i] = 'P';
+                        }
+                    }
+                    break;
+                case 5:
+                    if(yBlue == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yBlue == false)
+                    {
+                        if(yYellow == true || yPurple == true)
+                        {
+                            cpuVldA[i] = 'B';
+                        }
+                    }
+                    break;
+                
+            }
+        }
+        
+        
+        
+        
+        //Choose a random character from the valid attacking array
+        attWith = '\0';//What if no valid attacking territories? Inf loop?
+        while(attWith == '\0')
+        {
+            random = rand() % 6;
+            attWith = cpuVldA[random];
+        }
+//        switch(attWith)
+//        {
+//            case 'R':
+//                cout<<"\nCPU attacks with Red\n";
+//                break;
+//            case 'G':
+//                cout<<"\nCPU attacks with Green\n";
+//                break;
+//            case 'W':
+//                cout<<"\nCPU attacks with White\n";
+//                break;
+//            case 'Y':
+//                cout<<"\nCPU attacks with Yellow\n";
+//                break;
+//            case 'P':
+//                cout<<"\nCPU attacks with Purple\n";
+//                break;
+//            case 'B':
+//                cout<<"\nCPU attacks with Blue\n";
+//                break;
+//        }
+        //yRed, yWhite, yGreen, yYellow, yPurple, yBlue
+        //Set valid defending territories list for the computer's choice of attacker
+        
+        //Clear the list first.
+        for(int i = 0; i < SIZE; i++)
+        {
+            cpuVldD[i] = '\0';
+        }
+        
+        //Fill defending valid territory array (CPU)
+        switch(attWith)
+        {
+            case 'R':
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yGreen == true)cpuVldD[2] = 'G';
+                break;
+            case 'W':
+                if(yRed == true)cpuVldD[0] = 'R';
+                if(yGreen == true)cpuVldD[2] = 'G';
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yPurple == true)cpuVldD[4] = 'P';
+                break;
+            case 'G':
+                if(yRed == true)cpuVldD[0] = 'R';
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yYellow == true)cpuVldD[3] = 'Y'; 
+                break;
+            case 'Y':
+                if(yGreen == true)cpuVldD[2] = 'G';
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yPurple == true)cpuVldD[4] = 'P'; 
+                if(yBlue == true)cpuVldD[5] = 'B';
+                break;
+            case 'P':
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yBlue == true)cpuVldD[5] = 'B';
+                break;
+            case 'B':
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yPurple == true)cpuVldD[4] = 'P';
+                break;
+        }
 
+        //Make CPU choose a random valid defending territory
+        defWith = '\0';
+        while(defWith == '\0')
+        {
+            random = rand() % 6;
+            defWith = cpuVldD[random];
+        }
+//        switch(defWith)
+//        {
+//            case 'R':
+//                cout<<"\nYou Defended with Red\n";
+//                break;
+//            case 'G':
+//                cout<<"\nYou Defended with Green\n";
+//                break;
+//            case 'W':
+//                cout<<"\nYou Defended with White\n";
+//                break;
+//            case 'Y':
+//                cout<<"\nYou Defended with Yellow\n";
+//                break;
+//            case 'P':
+//                cout<<"\nYou Defended with Purple\n";
+//                break;
+//            case 'B':
+//                cout<<"\nYou Defended with Blue\n";
+//                break;
+//        }
+        
+        //Get Attacking Territories Dice Count
+        attD = attDCnt(attWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
+        //See if the attack wins
+        attWon = winner(attWith, defWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
+        //If attack Won
+        if(attWon == true)
+        {
+            (turn == true)?cout<<"Your Attack Won!\n":cout<<"CPU Attack Won!\n";
+            cout<<"=================\n";
 
+            //Attacking territory loses all but 1 dice
+            switch(attWith)
+            {
+                case 'R':
+                    dRed = 1;
+                    break;
+                case 'W':
+                    dWhite = 1;
+                    break;
+                case 'G':
+                    dGreen = 1;
+                    break;
+                case 'Y':
+                    dYellow = 1;
+                    break;
+                case 'P':
+                    dPurple = 1;
+                    break;
+                case 'B':
+                    dBlue = 1;
+                    break;
+            }
+
+            //Defending territory gains all dice but 1 used in the attack
+            //If attack dice == 1, then defending territory is set to 1, not 0.
+            //Whoever lost the defense territory control is reversed, hence "!yTerritory" 
+            switch(defWith)
+            {
+                case 'R':
+                    (attD - 1 == 0)?dRed = 1:dRed = (attD-1);
+                    yRed = !yRed;
+                    break;
+                case 'W':
+                    (attD - 1 == 0)?dWhite = 1:dWhite = (attD-1);
+                    yWhite = !yWhite;
+                    break;
+                case 'G':
+                    (attD - 1 == 0)?dGreen = 1:dGreen = (attD-1);
+                    yGreen = !yGreen;
+                    break;
+                case 'Y':
+                    (attD - 1 == 0)?dYellow = 1:dYellow = (attD-1);
+                    yYellow = !yYellow;
+                    break;
+                case 'P':
+                    (attD - 1 == 0)?dPurple = 1:dPurple = (attD-1);
+                    yPurple = !yPurple;
+                    break;
+                case 'B':
+                    (attD - 1 == 0)?dBlue = 1:dBlue = (attD-1);
+                    yBlue = ! yBlue;
+                    break;
+            }
+
+            
+        }
+        //If attack lost
+        else//(if attack lost)
+        {
+            //attacking territory loses all but 1 dice
+            switch(attWith)
+            {
+                case 'R':
+                    dRed = 1;
+                    break;
+                case 'W':
+                    dWhite = 1;
+                    break;
+                case 'G':
+                    dGreen = 1;
+                    break;
+                case 'Y':
+                    dYellow = 1;
+                    break;
+                case 'P':
+                    dPurple = 1;
+                    break;
+                case 'B':
+                    dBlue = 1;
+                    break;
+            }
+
+            (turn == true)?cout<<"Your Attack Failed!\n":cout<<"CPU Attack Failed!\n";//Output the results
+        }
         //Distribute Dice. Equals 1 + however many adjacent territories CPU owns
+        //<editor-fold defaultstate="collapsed" desc="Distribute Dice">
+        //======================================================================
 
+        //Get the count of adjacent territories of the current player
+        adjcnts = adjCnt(turn, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
+        if(adjcnts == 6)gameovr = true;//Check if the game is actually over
+        cout<<"\nDistributing Dice...\n";
+        cout<<"====================\n";
+        //Distribute that many dice randomly across the territories they own
+        while(adjcnts != 0)
+        {
+            random = rand() % 6 + 1;
+            //<editor-fold defaultstate="collapsed" desc="test cases">
+            //
+
+            if(random == 1 && yRed == false && dRed <= maxDice - 1)
+            {
+                dRed++;
+                cout<<"\nDice on Red + 1";
+                adjcnts--;
+            }
+            else if(random == 2 && yWhite == false && dWhite <= maxDice - 1)
+            {
+                dWhite++;
+                cout<<"\nDice on White + 1";
+                adjcnts--;
+            }
+            else if(random == 3 && yGreen == false && dGreen <= maxDice - 1)
+            {
+                dGreen++;
+                cout<<"\nDice on Green + 1";
+                adjcnts--;
+            }
+            else if(random == 4 && yYellow == false && dYellow <= maxDice - 1)
+            {
+                dYellow++;
+                cout<<"\nDice on Yellow + 1";
+                adjcnts--;
+            }
+            else if(random == 5 && yPurple == false && dPurple <= maxDice - 1)
+            {
+                dPurple++;
+                cout<<"\nDice on Purple + 1";
+                adjcnts--;
+            }
+            else if(random == 6 && yBlue == false && dBlue <= maxDice - 1)
+            {
+                dBlue++;
+                cout<<"\nDice on Blue + 1";
+                adjcnts--;
+            }
+            //
+            //</editor-fold>
+        }
+        cout<<endl;
+
+        //======================================================================
+//        </editor-fold>
 
         //
         //</editor-fold>
@@ -361,47 +676,12 @@ int main()
     cout<<setfill(' ')<<setw(18)<<"Game Over\n"<<setfill('=');
     cout<<setw(30)<<"\n";
     
-    //<editor-fold defaultstate="collpased" desc="Game Map">
-    //==========================================================================
-     //Territories
-     //41-red, 42-green, 43-yellow, 44-blue, 45-purple, 47-white
-     cout<<"\n\nYou: "<<plyrOne<<endl;
-     printf("%c[0;34;46m^ ^    ^^^   ^    ^^^     ^^ ^    ^^^       ^^ ^       ^\n", 27); // waves Background
-     printf("%c[0;34;46m^^        ^^^",27);printf("%c[41m          ",27);printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27);// waves Background
-     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m          ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mYou    ",27):printf("%c[1;30;41mCPU    ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^     ^^    ^     ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mDice:%d   ",27, dRed):printf("%c[1;30;41mDice:%d   ",27, dRed);printf("%c[47m            ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m            ",27);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^     ^^^",27);printf("%c[41m              ",27);printf("%c[47m                     ",27);printf("%c[0;34;46m^^^      ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                  ",27);printf("%c[0;34;46m^^^     ^^    ^^\n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^",27);printf("%c[42m             ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mYou      ",27):printf("%c[1;30;47mCPU      ",27);printf("%c[0;34;46m^^^     ^ ^     ^^^  \n", 27); // waves Background
-     printf("%c[0;34;46m^^      ",27);printf("%c[42m      ",27);(yGreen==true)?printf("%c[1;30;42mYou     ",27):printf("%c[1;30;42mCPU     ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mDice:%d   ",27, dWhite):printf("%c[47mDice:%d   ",27, dWhite);printf("%c[0;34;46m^^^      ^     ^^^   \n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^",27);printf("%c[42m     ",27);(yGreen==true)?printf("%c[1;30;42mDice:%d  ",27, dGreen):printf("%c[1;30;42mDice:%d  ",27, dGreen);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^^^    \n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^^^  \n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                      ",27);printf("%c[0;34;46m^^^     ^^  \n", 27); // waves Background
-     printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m       ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^       \n", 27); // waves Background                                                                                                                                       //Well this got a little.. out of hand...
-     printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^   \n", 27); // waves Background
-     printf("%c[0;34;46m^^     ^^^      ^^^",27);printf("%c[43m        ",27);printf("%c[45m          ",27);printf("%c[0;34;46m^^^  ^^    ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mYou    ",27):printf("%c[1;30;43mCPU    ",27);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;45mYou    ",27):printf("%c[1;30;45mCPU    ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mDice:%d ",27, dYellow):printf("%c[1;30;43mDice:%d ",27, dYellow);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;5mDice:%d  ",27, dPurple):printf("%c[1;30;45mDice:%d  ",27, dPurple);printf("%c[0;34;46m^   ^^   ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^       ^    ^^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m    ^^    ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^       ^^       ^^^",27);printf("%c[43m      ",27);printf("%c[45m         ",27);printf("%c[0;34;46m^^    ^^    ^^^     \n", 27); // waves Background
-     printf("%c[0;34;46m^^     ^         ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^ \n", 27); // waves Background
-     printf("%c[0;34;46m^^               ^^^",27);printf("%c[43m           ",27);printf("%c[44m           ",27);printf("%c[0;34;46m^^^     ^^   ^\n", 27); // waves Background
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27); 
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                   ",27);(yBlue==true)?printf("%c[1;30;44mYou                   ",27):printf("%c[1;30;44mCPU                   ",27);printf("%c[0;34;46m^^^ \n", 27);
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                 ",27);(yBlue==true)?printf("%c[1;30;44mDice:%d                ",27, dBlue):printf("%c[1;30;44mDice:%d                ",27, dBlue);printf("%c[0;34;46m^^^   \n", 27);
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
-     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
-     printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
-     printf("%c[0m", 27);
-    //==========================================================================
-    //</editor-fold>
+    //Prints Map/Board
+    printBoard(plyrOne, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
+
     
     gameDat<<turnCnt<<" turns to finish the game"<<endl;
-    
+   
     while(getline(gameInf, gmeData))
     {
         cout<<gmeData<<endl;
@@ -411,6 +691,8 @@ int main()
     gameDat.close();
     return 0;
 }
+
+
 
  //<editor-fold defaultstate="collapsed" desc="Functions">
 //
@@ -476,7 +758,7 @@ bool valAtt(char attckr, bool red, bool white, bool green, bool yellow, bool pur
     return valid;
 }
 
-//Valid Defender territory? Checks if the defending territory is valid. True:YesPlayer1, False:YesCPU
+//Valid Defender territory? Checks if the defending territory is valid.
 bool valDef(char attckr, char dfnder, bool red, bool white, bool green, bool yellow, bool purple, bool blue)
 {
     bool valid;
@@ -629,6 +911,44 @@ int adjCnt(bool turn, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yP
     }
     
     return acount;
+}
+
+void printBoard(string plyrOne, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, int dRed, int dWhite, int dGreen, int dYellow, int dPurple, int dBlue)
+{
+    //Ansii color codes as follows...
+    //41-red, 42-green, 43-yellow, 44-blue, 45-purple, 47-white
+     cout<<"\n\nYou: "<<plyrOne<<endl;
+     printf("%c[0;34;46m^ ^    ^^^   ^    ^^^     ^^ ^    ^^^       ^^ ^       ^\n", 27); // waves Background
+     printf("%c[0;34;46m^^        ^^^",27);printf("%c[41m          ",27);printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27);// waves Background
+     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m          ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mYou    ",27):printf("%c[1;30;41mCPU    ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^     ^^    ^     ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mDice:%d   ",27, dRed):printf("%c[1;30;41mDice:%d   ",27, dRed);printf("%c[47m            ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m            ",27);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^     ^^^",27);printf("%c[41m              ",27);printf("%c[47m                     ",27);printf("%c[0;34;46m^^^      ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                  ",27);printf("%c[0;34;46m^^^     ^^    ^^\n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^",27);printf("%c[42m             ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mYou      ",27):printf("%c[1;30;47mCPU      ",27);printf("%c[0;34;46m^^^     ^ ^     ^^^  \n", 27); // waves Background
+     printf("%c[0;34;46m^^      ",27);printf("%c[42m      ",27);(yGreen==true)?printf("%c[1;30;42mYou     ",27):printf("%c[1;30;42mCPU     ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mDice:%d   ",27, dWhite):printf("%c[47mDice:%d   ",27, dWhite);printf("%c[0;34;46m^^^      ^     ^^^   \n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^",27);printf("%c[42m     ",27);(yGreen==true)?printf("%c[1;30;42mDice:%d  ",27, dGreen):printf("%c[1;30;42mDice:%d  ",27, dGreen);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^^^    \n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^^^  \n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                      ",27);printf("%c[0;34;46m^^^     ^^  \n", 27); // waves Background
+     printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m       ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^       \n", 27); // waves Background                                                                                                                                       //Well this got a little.. out of hand...
+     printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^   \n", 27); // waves Background
+     printf("%c[0;34;46m^^     ^^^      ^^^",27);printf("%c[43m        ",27);printf("%c[45m          ",27);printf("%c[0;34;46m^^^  ^^    ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mYou    ",27):printf("%c[1;30;43mCPU    ",27);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;45mYou    ",27):printf("%c[1;30;45mCPU    ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mDice:%d ",27, dYellow):printf("%c[1;30;43mDice:%d ",27, dYellow);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;5mDice:%d  ",27, dPurple):printf("%c[1;30;45mDice:%d  ",27, dPurple);printf("%c[0;34;46m^   ^^   ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^       ^    ^^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m    ^^    ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^       ^^       ^^^",27);printf("%c[43m      ",27);printf("%c[45m         ",27);printf("%c[0;34;46m^^    ^^    ^^^     \n", 27); // waves Background
+     printf("%c[0;34;46m^^     ^         ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^ \n", 27); // waves Background
+     printf("%c[0;34;46m^^               ^^^",27);printf("%c[43m           ",27);printf("%c[44m           ",27);printf("%c[0;34;46m^^^     ^^   ^\n", 27); // waves Background
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27); 
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                   ",27);(yBlue==true)?printf("%c[1;30;44mYou                   ",27):printf("%c[1;30;44mCPU                   ",27);printf("%c[0;34;46m^^^ \n", 27);
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                 ",27);(yBlue==true)?printf("%c[1;30;44mDice:%d                ",27, dBlue):printf("%c[1;30;44mDice:%d                ",27, dBlue);printf("%c[0;34;46m^^^   \n", 27);
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
+     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
+     printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
+     printf("%c[0m", 27);
 }
 
 //
