@@ -36,8 +36,8 @@ int main()
     //<editor-fold defaultstate="collapsed" desc="Variable Declarations">
     //==========================================================================
 
-    string plyrOne;
-    string gmeData;
+    string plyrOne;//Player's Name
+    string gmeData;//For use with reading text from files
     ofstream gameDat;
     ifstream gameInf;
     gameDat.open("GameData.txt");
@@ -71,15 +71,13 @@ int main()
     //Random Seed
     srand(static_cast<int> (seedval));
 
-    //Initialize with random dice count between 1 and 8
-    dRed = rand() % 8 + 1;
-    dBlue = rand() % 8 + 1;
-    dYellow = rand() % 8 + 1;
-    dGreen = rand() % 8 + 1;
-    dPurple = rand() % 8 + 1;
-    dWhite = rand() % 8 + 1;
-
-
+    //Initialize with random dice count between 1 and MaxDice
+    dRed = rand() % maxDice + 1;
+    dBlue = rand() % maxDice + 1;
+    dYellow = rand() % maxDice + 1;
+    dGreen = rand() % maxDice + 1;
+    dPurple = rand() % maxDice + 1;
+    dWhite = rand() % maxDice + 1;
 
     //==========================================================================
     //</editor-fold>
@@ -140,6 +138,7 @@ int main()
 
         //Which territory is defending? prompt.. Also reprint board and remind user what they chose to attack with.. In case they forgot :P, wow im so nice! xD
         printBoard(plyrOne, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
+        
         cout << "Remember, you're attacking with: ";
         switch (attWith)
         {
@@ -162,6 +161,8 @@ int main()
                 cout << "Blue\n";
                 break;
         }
+        
+        //Choose Defending Territory Prompt
         defend(attWith, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
 
         //Get defending territory
@@ -197,6 +198,8 @@ int main()
 
         //Get attacking territory's dice count
         attD = attDCnt(attWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
+        
+        //Check if the attack won
         attWon = winner(attWith, defWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
 
         //======================================================================
@@ -268,7 +271,7 @@ int main()
             //======================================================================
             //</editor-fold>
 
-            //<editor-fold defaultstate="collapsed" desc="If Attack Failed">
+        //<editor-fold defaultstate="collapsed" desc="If Attack Failed">
             //======================================================================
 
         else//(if attack lost)
@@ -476,7 +479,7 @@ int main()
             //If attack Won
             if (attWon == true)
             {
-                (turn == true) ? cout << "Your Attack Won!\n" : cout << "CPU Attack Won!\n";
+                (turn == true) ? cout << "Your Attack Won!\n" : cout << "CPU Attack Won!\n";//I know
 
                 //Attacking territory loses all but 1 dice
                 switch (attWith)
@@ -536,7 +539,7 @@ int main()
             }
 
                 //If attack lost
-            else//(if attack lost)
+            else
             {
                 //attacking territory loses all but 1 dice
                 switch (attWith)
@@ -561,7 +564,7 @@ int main()
                         break;
                 }
 
-                (turn == true) ? cout << "Your Attack Failed!\n" : cout << "CPU Attack Failed!\n"; //Output the results
+                (turn == true) ? cout << "Your Attack Failed!\n" : cout << "CPU Attack Failed!\n"; //Output the results of attack
             }
         }
 
@@ -574,6 +577,7 @@ int main()
         cout << "====================\n";
         cout << "Distributing Dice...\n";
         cout << "====================\n";
+        
         //Distribute that many dice randomly across the territories they own
         while (adjcnts != 0)
         {
@@ -649,6 +653,9 @@ int main()
     {
         cout << gmeData << endl;
     }
+    
+    cout<<"\nIt appears you... ";
+    (yRed == true)?cout<<"won the game!\n":cout<<"lost the game!\n";
 
     gameInf.close();
     gameDat.close();
@@ -657,8 +664,8 @@ int main()
 
 //<editor-fold defaultstate="collapsed" desc="Functions">
 //
-//Attack prompt, also flags if your choice of attack is possible
 
+//Attack prompt, also tells you if your choice of attack is possible
 void attack(bool red, bool white, bool green, bool yellow, bool purple, bool blue)
 {
     cout << "\nEnter the territory you want to attack with: ";
@@ -671,8 +678,7 @@ void attack(bool red, bool white, bool green, bool yellow, bool purple, bool blu
     printf("%c[0m", 27);
 }
 
-//Attacking prompt, also flags if the defender is a valid target
-
+//Attacking prompt, also tells you if the defender is a valid target
 void defend(char attckr, bool red, bool white, bool green, bool yellow, bool purple, bool blue)
 {
     bool r, w, g, y, p, b;
@@ -705,7 +711,6 @@ void defend(char attckr, bool red, bool white, bool green, bool yellow, bool pur
 }
 
 //Valid Attacking territory? Checks if you own the point, and if there are surrounding points owned by CPU
-
 bool valAtt(char attckr, bool red, bool white, bool green, bool yellow, bool purple, bool blue)
 {
     bool valid;
@@ -719,7 +724,6 @@ bool valAtt(char attckr, bool red, bool white, bool green, bool yellow, bool pur
 }
 
 //Valid Defender territory? Checks if the defending territory is valid.
-
 bool valDef(char attckr, char dfnder, bool red, bool white, bool green, bool yellow, bool purple, bool blue)
 {
     bool valid;
@@ -810,7 +814,8 @@ bool winner(char attckr, char dfnder, int dRed, int dWhite, int dGreen, int dYel
     return attWon;
 }
 
-int roll(int dCount)//returns sum of int dCount dice rolls
+//returns sum of int dCount dice rolls
+int roll(int dCount)
 {
     int random;
     int roll = 0;
@@ -824,7 +829,6 @@ int roll(int dCount)//returns sum of int dCount dice rolls
 }
 
 //Returns Dice Count of the attacking territory
-
 int attDCnt(char attWith, int dRed, int dWhite, int dGreen, int dYellow, int dPurple, int dBlue)
 {
     if (attWith == 'R')return dRed;
@@ -838,7 +842,6 @@ int attDCnt(char attWith, int dRed, int dWhite, int dGreen, int dYellow, int dPu
 }
 
 //Returns the amount of adjacent territories for the given player
-
 int adjCnt(bool turn, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue)
 {
     int acount = 0;
@@ -867,11 +870,12 @@ int adjCnt(bool turn, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yP
     return acount;
 }
 
+//Prints the Board/Map
 void printBoard(string plyrOne, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, int dRed, int dWhite, int dGreen, int dYellow, int dPurple, int dBlue)
 {
     //Ansii color codes as follows...
     //41-red, 42-green, 43-yellow, 44-blue, 45-purple, 47-white
-    cout << "\n\nYou: " << plyrOne << endl;
+    cout << "\n\nYou: " << plyrOne << endl;//5UC4 NAM3, V3Re P3R50N@L, W@W! (^(o)3(o)^)
     printf("%c[0;34;46m^ ^    ^^^   ^    ^^^     ^^ ^    ^^^       ^^ ^       ^\n", 27); // waves Background
     printf("%c[0;34;46m^^        ^^^",27);printf("%c[41m          ",27);printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27);// waves Background
     printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m          ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
@@ -902,9 +906,10 @@ void printBoard(string plyrOne, bool yRed, bool yWhite, bool yGreen, bool yYello
     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
     printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
     printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
-    printf("%c[0m", 27);
+    printf("%c[0m", 27);//Resets
 }
 
+//Fills the CPU's array of options of attack
 void fillAttackArray(char *cpuVldA, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, int SIZE)
 {
     for (int i = 0; i < SIZE; i++)
@@ -994,6 +999,7 @@ void fillAttackArray(char *cpuVldA, bool yRed, bool yWhite, bool yGreen, bool yY
     }
 }
 
+//Fills the CPU's array of options it can attack with after selecting an "attacking" territory
 void fillDefenseArray(char attWith, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, char *cpuVldD)
 {
     //Fills the array with valid defending territories depending on what the CPU is attacking with
