@@ -26,6 +26,8 @@ bool winner(char, char, int, int, int, int, int, int, bool, bool, bool, bool, bo
 int attDCnt(char, int, int, int, int, int, int);
 int roll(int);
 int adjCnt(bool, bool, bool, bool, bool, bool, bool);
+void fillAttackArray(char *, bool, bool, bool, bool, bool, bool, int);
+void fillDefenseArray(char, bool, bool, bool, bool, bool, bool, char *, int);
 //
 //</editor-fold>
 
@@ -56,6 +58,7 @@ int main()
     int SIZE = 6;
     char cpuVldA[SIZE];
     char cpuVldD[SIZE];
+    char cntnu;
     int choices;
     
     yRed = true;
@@ -90,9 +93,11 @@ int main()
     
     do
     {
+        turn = true; //Set turn as users. (Human player starts first)
+        
         //Print Board/Map
         printBoard(plyrOne, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
-
+        
         //<editor-fold defaultstate="collapsed" desc="User Input Prompts">
         //======================================================================
         turnCnt++;
@@ -150,7 +155,7 @@ int main()
         if(attWon == true)
         {
             (turn == true)?cout<<"Your Attack Won!\n":cout<<"CPU Attack Won!\n";
-            cout<<"=================\n";
+            cout<<"===================\n";
 
             //Attacking territory loses all but 1 dice
             switch(attWith)
@@ -173,7 +178,7 @@ int main()
                 case 'B':
                     dBlue = 1;
                     break;
-            }
+            }//Consider placing into function
 
             //Defending territory gains all dice but 1 used in the attack
             //If attack dice == 1, then defending territory is set to 1, not 0.
@@ -204,7 +209,7 @@ int main()
                     (attD - 1 == 0)?dBlue = 1:dBlue = (attD-1);
                     yBlue = ! yBlue;
                     break;
-            }
+            }//Consider placing into function
 
             
         }
@@ -314,294 +319,200 @@ int main()
         cout<<"\n\n==========================\n";
         cout<<"COMPUTERS TURN!\n";
         cout<<"==========================\n";
-        turn = false;
+        turn = false;//As seen above, turn = false represents the CPU turn is true!
         
-        //Make CPU choose a random valid attacking territory
         
         //Fill CPU's Valid attacking territory array
+        memset(cpuVldA, '\0', SIZE);//Clear the cpuVldA array every loop
+        fillAttackArray(cpuVldA, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, SIZE);
+        
+        //Check to avoid infinite loop
+        choices = 0;
         for(int i = 0; i < SIZE; i++)
         {
-            switch(i)
-            {
-                case 0:
-                    if(yRed == true)
-                    {
-                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yRed == false)
-                    {
-                        if(yGreen == true || yWhite == true)
-                        {
-                            cpuVldA[i] = 'R';
-                        }
-                    }
-                    break;
-                case 1:
-                    if(yWhite == true)
-                    {
-                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yWhite == false)
-                    {
-                        if(yRed == true || yGreen == true || yYellow == true || yPurple == true)
-                        {
-                            cpuVldA[i] = 'W';
-                        }
-                    }
-                    break;
-                case 2:
-                    if(yGreen == true)
-                    {
-                        cpuVldA[i-1] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yGreen == false)
-                    {
-                        if(yRed == true || yWhite == true || yYellow == true)
-                        {
-                            cpuVldA[i-1] = 'G';
-                        }
-                    }
-                    break;
-                case 3:
-                    if(yYellow == true)
-                    {
-                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yYellow == false)
-                    {
-                        if(yGreen == true || yWhite == true || yPurple == true || yBlue == true)
-                        {
-                            cpuVldA[i] = 'Y';
-                        }
-                    }
-                    break;
-                case 4:
-                    if(yPurple == true)
-                    {
-                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yPurple == false)
-                    {
-                        if(yWhite == true || yYellow == true || yBlue == true)
-                        {
-                            cpuVldA[i] = 'P';
-                        }
-                    }
-                    break;
-                case 5:
-                    if(yBlue == true)
-                    {
-                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
-                    }
-                    else if(yBlue == false)
-                    {
-                        if(yYellow == true || yPurple == true)
-                        {
-                            cpuVldA[i] = 'B';
-                        }
-                    }
-                    break;
-                
-            }
+            if(cpuVldA[i] == '\0')choices++;
         }
-        
-        
-        
-        
-        //Choose a random character from the valid attacking array
-        attWith = '\0';//What if no valid attacking territories? Inf loop?
-        while(attWith == '\0')
+        attWith = '\0';
+        while(attWith == '\0' && choices != SIZE)//ifchoices == 6, no valid options inside of the array
         {
             random = rand() % 6;
             attWith = cpuVldA[random];
         }
-//        switch(attWith)
-//        {
-//            case 'R':
-//                cout<<"\nCPU attacks with Red\n";
-//                break;
-//            case 'G':
-//                cout<<"\nCPU attacks with Green\n";
-//                break;
-//            case 'W':
-//                cout<<"\nCPU attacks with White\n";
-//                break;
-//            case 'Y':
-//                cout<<"\nCPU attacks with Yellow\n";
-//                break;
-//            case 'P':
-//                cout<<"\nCPU attacks with Purple\n";
-//                break;
-//            case 'B':
-//                cout<<"\nCPU attacks with Blue\n";
-//                break;
-//        }
-        //yRed, yWhite, yGreen, yYellow, yPurple, yBlue
-        //Set valid defending territories list for the computer's choice of attacker
         
-        //Clear the list first.
-        for(int i = 0; i < SIZE; i++)
-        {
-            cpuVldD[i] = '\0';
-        }
-        
-        //Fill defending valid territory array (CPU)
+        //Displays what the CPU chose to attack with
         switch(attWith)
         {
-            case 'R':
-                if(yWhite == true)cpuVldD[1] = 'W';
-                if(yGreen == true)cpuVldD[2] = 'G';
+            case '\0':
+                cout<<"\nCPU Had no valid attack option!\n";
                 break;
-            case 'W':
-                if(yRed == true)cpuVldD[0] = 'R';
-                if(yGreen == true)cpuVldD[2] = 'G';
-                if(yYellow == true)cpuVldD[3] = 'Y';
-                if(yPurple == true)cpuVldD[4] = 'P';
+            case 'R':
+                cout<<"CPU attacks with Red\n";
                 break;
             case 'G':
-                if(yRed == true)cpuVldD[0] = 'R';
-                if(yWhite == true)cpuVldD[1] = 'W';
-                if(yYellow == true)cpuVldD[3] = 'Y'; 
+                cout<<"CPU attacks with Green\n";
+                break;
+            case 'W':
+                cout<<"CPU attacks with White\n";
                 break;
             case 'Y':
-                if(yGreen == true)cpuVldD[2] = 'G';
-                if(yWhite == true)cpuVldD[1] = 'W';
-                if(yPurple == true)cpuVldD[4] = 'P'; 
-                if(yBlue == true)cpuVldD[5] = 'B';
+                cout<<"CPU attacks with Yellow\n";
                 break;
             case 'P':
-                if(yWhite == true)cpuVldD[1] = 'W';
-                if(yYellow == true)cpuVldD[3] = 'Y';
-                if(yBlue == true)cpuVldD[5] = 'B';
+                cout<<"CPU attacks with Purple\n";
                 break;
             case 'B':
-                if(yYellow == true)cpuVldD[3] = 'Y';
-                if(yPurple == true)cpuVldD[4] = 'P';
+                cout<<"CPU attacks with Blue\n";
                 break;
-        }
 
-        //Make CPU choose a random valid defending territory
-        defWith = '\0';
-        while(defWith == '\0')
-        {
-            random = rand() % 6;
-            defWith = cpuVldD[random];
         }
-//        switch(defWith)
-//        {
-//            case 'R':
-//                cout<<"\nYou Defended with Red\n";
-//                break;
-//            case 'G':
-//                cout<<"\nYou Defended with Green\n";
-//                break;
-//            case 'W':
-//                cout<<"\nYou Defended with White\n";
-//                break;
-//            case 'Y':
-//                cout<<"\nYou Defended with Yellow\n";
-//                break;
-//            case 'P':
-//                cout<<"\nYou Defended with Purple\n";
-//                break;
-//            case 'B':
-//                cout<<"\nYou Defended with Blue\n";
-//                break;
-//        }
         
-        //Get Attacking Territories Dice Count
-        attD = attDCnt(attWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
-        //See if the attack wins
-        attWon = winner(attWith, defWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
-        //If attack Won
-        if(attWon == true)
+
+        
+        //Check to see if there are any valid territories the CPU can attack
+        if(attWith != '\0')//Probably a better way to validate this to skip all of it
         {
-            (turn == true)?cout<<"Your Attack Won!\n":cout<<"CPU Attack Won!\n";
-            cout<<"=================\n";
+            //First clears the entire valid defending array to give it a "Clean slate" of sorts
+            memset(cpuVldD, '\0', SIZE);
 
-            //Attacking territory loses all but 1 dice
-            switch(attWith)
-            {
-                case 'R':
-                    dRed = 1;
-                    break;
-                case 'W':
-                    dWhite = 1;
-                    break;
-                case 'G':
-                    dGreen = 1;
-                    break;
-                case 'Y':
-                    dYellow = 1;
-                    break;
-                case 'P':
-                    dPurple = 1;
-                    break;
-                case 'B':
-                    dBlue = 1;
-                    break;
-            }
-
-            //Defending territory gains all dice but 1 used in the attack
-            //If attack dice == 1, then defending territory is set to 1, not 0.
-            //Whoever lost the defense territory control is reversed, hence "!yTerritory" 
-            switch(defWith)
-            {
-                case 'R':
-                    (attD - 1 == 0)?dRed = 1:dRed = (attD-1);
-                    yRed = !yRed;
-                    break;
-                case 'W':
-                    (attD - 1 == 0)?dWhite = 1:dWhite = (attD-1);
-                    yWhite = !yWhite;
-                    break;
-                case 'G':
-                    (attD - 1 == 0)?dGreen = 1:dGreen = (attD-1);
-                    yGreen = !yGreen;
-                    break;
-                case 'Y':
-                    (attD - 1 == 0)?dYellow = 1:dYellow = (attD-1);
-                    yYellow = !yYellow;
-                    break;
-                case 'P':
-                    (attD - 1 == 0)?dPurple = 1:dPurple = (attD-1);
-                    yPurple = !yPurple;
-                    break;
-                case 'B':
-                    (attD - 1 == 0)?dBlue = 1:dBlue = (attD-1);
-                    yBlue = ! yBlue;
-                    break;
-            }
-
+            //Fill valid defending territory array for the CPU
+            fillDefenseArray(attWith, yRed, yWhite, yGreen, yYellow, yPurple, yBlue, cpuVldD, SIZE);
             
-        }
-        //If attack lost
-        else//(if attack lost)
-        {
-            //attacking territory loses all but 1 dice
-            switch(attWith)
+            choices = 0;
+            for(int i = 0; i < SIZE; i++)
             {
-                case 'R':
-                    dRed = 1;
-                    break;
-                case 'W':
-                    dWhite = 1;
-                    break;
-                case 'G':
-                    dGreen = 1;
-                    break;
-                case 'Y':
-                    dYellow = 1;
-                    break;
-                case 'P':
-                    dPurple = 1;
-                    break;
-                case 'B':
-                    dBlue = 1;
-                    break;
+                if(cpuVldD[i] == '\0')choices++;
             }
 
-            (turn == true)?cout<<"Your Attack Failed!\n":cout<<"CPU Attack Failed!\n";//Output the results
+            defWith = '\0';
+            while(defWith == '\0' && choices != SIZE)//If choices == SIZE, then there are no valid options
+            {
+                random = rand() % 6;
+                defWith = cpuVldD[random];
+            }
+
+            //Display what the player defended with against the CPU's attack
+            if(defWith != '\0')//If there are no valid territories for the CPU to attack, skips the switch statement
+            {
+                switch(defWith)
+                {
+                    case 'R':
+                        cout<<"You Defended with Red\n";
+                        break;
+                    case 'G':
+                        cout<<"You Defended with Green\n";
+                        break;
+                    case 'W':
+                        cout<<"You Defended with White\n";
+                        break;
+                    case 'Y':
+                        cout<<"You Defended with Yellow\n";
+                        break;
+                    case 'P':
+                        cout<<"You Defended with Purple\n";
+                        break;
+                    case 'B':
+                        cout<<"You Defended with Blue\n";
+                        break;
+                }
+            }
+
+            //Get Attacking Territories Dice Count
+            attD = attDCnt(attWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue);
+
+            //See if the attack wins
+            attWon = winner(attWith, defWith, dRed, dWhite, dGreen, dYellow, dPurple, dBlue, yRed, yWhite, yGreen, yYellow, yPurple, yBlue);
+
+            //If attack Won
+            if(attWon == true)
+            {
+                (turn == true)?cout<<"Your Attack Won!\n":cout<<"CPU Attack Won!\n";
+                cout<<"=================\n";
+
+                //Attacking territory loses all but 1 dice
+                switch(attWith)
+                {
+                    case 'R':
+                        dRed = 1;
+                        break;
+                    case 'W':
+                        dWhite = 1;
+                        break;
+                    case 'G':
+                        dGreen = 1;
+                        break;
+                    case 'Y':
+                        dYellow = 1;
+                        break;
+                    case 'P':
+                        dPurple = 1;
+                        break;
+                    case 'B':
+                        dBlue = 1;
+                        break;
+                }
+
+                //Defending territory gains all dice but 1 used in the attack
+                //If attack dice == 1, then defending territory is set to 1, not 0.
+                //Whoever lost the defense territory control is reversed, hence "!yTerritory" 
+                switch(defWith)
+                {
+                    case 'R':
+                        (attD - 1 == 0)?dRed = 1:dRed = (attD-1);
+                        yRed = !yRed;
+                        break;
+                    case 'W':
+                        (attD - 1 == 0)?dWhite = 1:dWhite = (attD-1);
+                        yWhite = !yWhite;
+                        break;
+                    case 'G':
+                        (attD - 1 == 0)?dGreen = 1:dGreen = (attD-1);
+                        yGreen = !yGreen;
+                        break;
+                    case 'Y':
+                        (attD - 1 == 0)?dYellow = 1:dYellow = (attD-1);
+                        yYellow = !yYellow;
+                        break;
+                    case 'P':
+                        (attD - 1 == 0)?dPurple = 1:dPurple = (attD-1);
+                        yPurple = !yPurple;
+                        break;
+                    case 'B':
+                        (attD - 1 == 0)?dBlue = 1:dBlue = (attD-1);
+                        yBlue = ! yBlue;
+                        break;
+                }
+
+
+            }
+
+            //If attack lost
+            else//(if attack lost)
+            {
+                //attacking territory loses all but 1 dice
+                switch(attWith)
+                {
+                    case 'R':
+                        dRed = 1;
+                        break;
+                    case 'W':
+                        dWhite = 1;
+                        break;
+                    case 'G':
+                        dGreen = 1;
+                        break;
+                    case 'Y':
+                        dYellow = 1;
+                        break;
+                    case 'P':
+                        dPurple = 1;
+                        break;
+                    case 'B':
+                        dBlue = 1;
+                        break;
+                }
+
+                (turn == true)?cout<<"Your Attack Failed!\n":cout<<"CPU Attack Failed!\n";//Output the results
+            }
         }
         //Distribute Dice. Equals 1 + however many adjacent territories CPU owns
         //<editor-fold defaultstate="collapsed" desc="Distribute Dice">
@@ -949,6 +860,133 @@ void printBoard(string plyrOne, bool yRed, bool yWhite, bool yGreen, bool yYello
      printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
      printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
      printf("%c[0m", 27);
+}
+
+void fillAttackArray(char *cpuVldA, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, int SIZE)
+{
+    for(int i = 0; i < SIZE; i++)
+        {
+            switch(i)
+            {
+                case 0:
+                    if(yRed == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yRed == false)
+                    {
+                        if(yGreen == true || yWhite == true)
+                        {
+                            cpuVldA[i] = 'R';
+                        }
+                    }
+                    break;
+                case 1:
+                    if(yWhite == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yWhite == false)
+                    {
+                        if(yRed == true || yGreen == true || yYellow == true || yPurple == true)
+                        {
+                            cpuVldA[i] = 'W';
+                        }
+                    }
+                    break;
+                case 2:
+                    if(yGreen == true)
+                    {
+                        cpuVldA[i-1] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yGreen == false)
+                    {
+                        if(yRed == true || yWhite == true || yYellow == true)
+                        {
+                            cpuVldA[i-1] = 'G';
+                        }
+                    }
+                    break;
+                case 3:
+                    if(yYellow == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yYellow == false)
+                    {
+                        if(yGreen == true || yWhite == true || yPurple == true || yBlue == true)
+                        {
+                            cpuVldA[i] = 'Y';
+                        }
+                    }
+                    break;
+                case 4:
+                    if(yPurple == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yPurple == false)
+                    {
+                        if(yWhite == true || yYellow == true || yBlue == true)
+                        {
+                            cpuVldA[i] = 'P';
+                        }
+                    }
+                    break;
+                case 5:
+                    if(yBlue == true)
+                    {
+                        cpuVldA[i] = '\0';//If you own the territory, the CPU cant attack with it
+                    }
+                    else if(yBlue == false)
+                    {
+                        if(yYellow == true || yPurple == true)
+                        {
+                            cpuVldA[i] = 'B';
+                        }
+                    }
+                    break;
+                
+            }
+        }
+}
+
+void fillDefenseArray(char attWith, bool yRed, bool yWhite, bool yGreen, bool yYellow, bool yPurple, bool yBlue, char *cpuVldD, int SIZE)
+{
+    //Fills the array with valid defending territories depending on what the CPU is attacking with
+    switch(attWith)
+        {
+            case 'R':
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yGreen == true)cpuVldD[2] = 'G';
+                break;
+            case 'W':
+                if(yRed == true)cpuVldD[0] = 'R';
+                if(yGreen == true)cpuVldD[2] = 'G';
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yPurple == true)cpuVldD[4] = 'P';
+                break;
+            case 'G':
+                if(yRed == true)cpuVldD[0] = 'R';
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yYellow == true)cpuVldD[3] = 'Y'; 
+                break;
+            case 'Y':
+                if(yGreen == true)cpuVldD[2] = 'G';
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yPurple == true)cpuVldD[4] = 'P'; 
+                if(yBlue == true)cpuVldD[5] = 'B';
+                break;
+            case 'P':
+                if(yWhite == true)cpuVldD[1] = 'W';
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yBlue == true)cpuVldD[5] = 'B';
+                break;
+            case 'B':
+                if(yYellow == true)cpuVldD[3] = 'Y';
+                if(yPurple == true)cpuVldD[4] = 'P';
+                break;
+        }
 }
 
 //
