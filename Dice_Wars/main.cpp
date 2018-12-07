@@ -873,123 +873,34 @@ void printBoard(string plyrOne, bool yRed, bool yWhite, bool yGreen, bool yYello
     //41-red, 42-green, 43-yellow, 44-blue, 45-purple, 47-white
     cout << "\n\nYou: " << plyrOne << endl;
     printf("%c[0;34;46m^ ^    ^^^   ^    ^^^     ^^ ^    ^^^       ^^ ^       ^\n", 27); // waves Background
-    printf("%c[0;34;46m^^        ^^^", 27);
-    printf("%c[41m          ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^    ^^^", 27);
-    printf("%c[41m          ", 27);
-    printf("%c[47m               ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^    ^^^", 27);
-    printf("%c[41m    ", 27);
-    (yRed == true) ? printf("%c[1;30;41mYou    ", 27) : printf("%c[1;30;41mCPU    ", 27);
-    printf("%c[47m               ", 27);
-    printf("%c[0;34;46m^^     ^^    ^     ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^    ^^^", 27);
-    printf("%c[41m    ", 27);
-    (yRed == true) ? printf("%c[1;30;41mDice:%d   ", 27, dRed) : printf("%c[1;30;41mDice:%d   ", 27, dRed);
-    printf("%c[47m            ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^    ^^^", 27);
-    printf("%c[41m            ", 27);
-    printf("%c[47m             ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^     ^^^", 27);
-    printf("%c[41m              ", 27);
-    printf("%c[47m                     ", 27);
-    printf("%c[0;34;46m^^^      ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[42m           ", 27);
-    printf("%c[47m                  ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^\n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^", 27);
-    printf("%c[42m             ", 27);
-    printf("%c[47m    ", 27);
-    (yWhite == true) ? printf("%c[1;30;47mYou      ", 27) : printf("%c[1;30;47mCPU      ", 27);
-    printf("%c[0;34;46m^^^     ^ ^     ^^^  \n", 27); // waves Background
-    printf("%c[0;34;46m^^      ", 27);
-    printf("%c[42m      ", 27);
-    (yGreen == true) ? printf("%c[1;30;42mYou     ", 27) : printf("%c[1;30;42mCPU     ", 27);
-    printf("%c[47m    ", 27);
-    (yWhite == true) ? printf("%c[1;30;47mDice:%d   ", 27, dWhite) : printf("%c[47mDice:%d   ", 27, dWhite);
-    printf("%c[0;34;46m^^^      ^     ^^^   \n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^", 27);
-    printf("%c[42m     ", 27);
-    (yGreen == true) ? printf("%c[1;30;42mDice:%d  ", 27, dGreen) : printf("%c[1;30;42mDice:%d  ", 27, dGreen);
-    printf("%c[47m             ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^    \n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[42m           ", 27);
-    printf("%c[47m               ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^  \n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[42m           ", 27);
-    printf("%c[47m                      ", 27);
-    printf("%c[0;34;46m^^^     ^^  \n", 27); // waves Background
-    printf("%c[0;34;46m^^             ^^^", 27);
-    printf("%c[43m       ", 27);
-    printf("%c[45m       ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^       \n", 27); // waves Background                                                                                                                                       //Well this got a little.. out of hand...
-    printf("%c[0;34;46m^^             ^^^", 27);
-    printf("%c[43m           ", 27);
-    printf("%c[45m       ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^   \n", 27); // waves Background
-    printf("%c[0;34;46m^^     ^^^      ^^^", 27);
-    printf("%c[43m        ", 27);
-    printf("%c[45m          ", 27);
-    printf("%c[0;34;46m^^^  ^^    ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^       ^^    ^^", 27);
-    printf("%c[43m          ", 27);
-    printf("%c[45m           ", 27);
-    printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^       ^^    ^^", 27);
-    printf("%c[43m  ", 27);
-    (yYellow == true) ? printf("%c[1;30;43mYou    ", 27) : printf("%c[1;30;43mCPU    ", 27);
-    printf("%c[45m     ", 27);
-    (yPurple == true) ? printf("%c[1;30;45mYou    ", 27) : printf("%c[1;30;45mCPU    ", 27);
-    printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^       ^^    ^^", 27);
-    printf("%c[43m  ", 27);
-    (yYellow == true) ? printf("%c[1;30;43mDice:%d ", 27, dYellow) : printf("%c[1;30;43mDice:%d ", 27, dYellow);
-    printf("%c[45m     ", 27);
-    (yPurple == true) ? printf("%c[1;30;5mDice:%d  ", 27, dPurple) : printf("%c[1;30;45mDice:%d  ", 27, dPurple);
-    printf("%c[0;34;46m^   ^^   ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^       ^    ^^^", 27);
-    printf("%c[43m          ", 27);
-    printf("%c[45m           ", 27);
-    printf("%c[0;34;46m    ^^    ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^       ^^       ^^^", 27);
-    printf("%c[43m      ", 27);
-    printf("%c[45m         ", 27);
-    printf("%c[0;34;46m^^    ^^    ^^^     \n", 27); // waves Background
-    printf("%c[0;34;46m^^     ^         ^^^", 27);
-    printf("%c[43m           ", 27);
-    printf("%c[45m       ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^ \n", 27); // waves Background
-    printf("%c[0;34;46m^^               ^^^", 27);
-    printf("%c[43m           ", 27);
-    printf("%c[44m           ", 27);
-    printf("%c[0;34;46m^^^     ^^   ^\n", 27); // waves Background
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                               ", 27);
-    printf("%c[0;34;46m^^^     ^^    \n", 27);
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                               ", 27);
-    printf("%c[0;34;46m^^^     ^^    \n", 27);
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                   ", 27);
-    (yBlue == true) ? printf("%c[1;30;44mYou                   ", 27) : printf("%c[1;30;44mCPU                   ", 27);
-    printf("%c[0;34;46m^^^ \n", 27);
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                 ", 27);
-    (yBlue == true) ? printf("%c[1;30;44mDice:%d                ", 27, dBlue) : printf("%c[1;30;44mDice:%d                ", 27, dBlue);
-    printf("%c[0;34;46m^^^   \n", 27);
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                               ", 27);
-    printf("%c[0;34;46m^^^     ^^    \n", 27);
-    printf("%c[0;34;46m^^      ^^^", 27);
-    printf("%c[44m                       ", 27);
-    printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
+    printf("%c[0;34;46m^^        ^^^",27);printf("%c[41m          ",27);printf("%c[0;34;46m^^^     ^^    ^^^      ^^^     ^^\n", 27);// waves Background
+    printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m          ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mYou    ",27):printf("%c[1;30;41mCPU    ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^     ^^    ^     ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m    ",27);(yRed==true)?printf("%c[1;30;41mDice:%d   ",27, dRed):printf("%c[1;30;41mDice:%d   ",27, dRed);printf("%c[47m            ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^    ^^^",27);printf("%c[41m            ",27);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^     ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^     ^^^",27);printf("%c[41m              ",27);printf("%c[47m                     ",27);printf("%c[0;34;46m^^^      ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                  ",27);printf("%c[0;34;46m^^^     ^^    ^^\n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^",27);printf("%c[42m             ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mYou      ",27):printf("%c[1;30;47mCPU      ",27);printf("%c[0;34;46m^^^     ^ ^     ^^^  \n", 27); // waves Background
+    printf("%c[0;34;46m^^      ",27);printf("%c[42m      ",27);(yGreen==true)?printf("%c[1;30;42mYou     ",27):printf("%c[1;30;42mCPU     ",27);printf("%c[47m    ",27);(yWhite==true)?printf("%c[1;30;47mDice:%d   ",27, dWhite):printf("%c[47mDice:%d   ",27, dWhite);printf("%c[0;34;46m^^^      ^     ^^^   \n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^",27);printf("%c[42m     ",27);(yGreen==true)?printf("%c[1;30;42mDice:%d  ",27, dGreen):printf("%c[1;30;42mDice:%d  ",27, dGreen);printf("%c[47m             ",27);printf("%c[0;34;46m^^^     ^^    ^^^    \n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m               ",27);printf("%c[0;34;46m^^^     ^^    ^^^  \n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[42m           ",27);printf("%c[47m                      ",27);printf("%c[0;34;46m^^^     ^^  \n", 27); // waves Background
+    printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m       ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^       \n", 27); // waves Background                                                                                                                                       //Well this got a little.. out of hand...
+    printf("%c[0;34;46m^^             ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^   \n", 27); // waves Background
+    printf("%c[0;34;46m^^     ^^^      ^^^",27);printf("%c[43m        ",27);printf("%c[45m          ",27);printf("%c[0;34;46m^^^  ^^    ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mYou    ",27):printf("%c[1;30;43mCPU    ",27);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;45mYou    ",27):printf("%c[1;30;45mCPU    ",27);printf("%c[0;34;46m^   ^^    ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^       ^^    ^^",27);printf("%c[43m  ",27);(yYellow==true)?printf("%c[1;30;43mDice:%d ",27, dYellow):printf("%c[1;30;43mDice:%d ",27, dYellow);printf("%c[45m     ",27);(yPurple==true)?printf("%c[1;30;5mDice:%d  ",27, dPurple):printf("%c[1;30;45mDice:%d  ",27, dPurple);printf("%c[0;34;46m^   ^^   ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^       ^    ^^^",27);printf("%c[43m          ",27);printf("%c[45m           ",27);printf("%c[0;34;46m    ^^    ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^       ^^       ^^^",27);printf("%c[43m      ",27);printf("%c[45m         ",27);printf("%c[0;34;46m^^    ^^    ^^^     \n", 27); // waves Background
+    printf("%c[0;34;46m^^     ^         ^^^",27);printf("%c[43m           ",27);printf("%c[45m       ",27);printf("%c[0;34;46m^^^     ^^    ^^^ \n", 27); // waves Background
+    printf("%c[0;34;46m^^               ^^^",27);printf("%c[43m           ",27);printf("%c[44m           ",27);printf("%c[0;34;46m^^^     ^^   ^\n", 27); // waves Background
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27); 
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                   ",27);(yBlue==true)?printf("%c[1;30;44mYou                   ",27):printf("%c[1;30;44mCPU                   ",27);printf("%c[0;34;46m^^^ \n", 27);
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                 ",27);(yBlue==true)?printf("%c[1;30;44mDice:%d                ",27, dBlue):printf("%c[1;30;44mDice:%d                ",27, dBlue);printf("%c[0;34;46m^^^   \n", 27);
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                               ",27);printf("%c[0;34;46m^^^     ^^    \n", 27);
+    printf("%c[0;34;46m^^      ^^^",27);printf("%c[44m                       ",27);printf("%c[0;34;46m^^^     ^^    ^^^     \n", 27);
     printf("%c[0;34;46m^^^    ^^^    ^    ^^     ^ ^^    ^^^        ^^^     ^^^\n", 27);
     printf("%c[0m", 27);
 }
