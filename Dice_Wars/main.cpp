@@ -55,7 +55,7 @@ int main()
     int turnCnt = 0; //Turn count
     bool gameovr = false; //Game Over if adjcnts ever equals 6 (Meaning all territories are owned by either player)
     bool attWon; //Holds the response of winner() checks if the attack won
-    int SIZE = 6; //The amount of territories, for use with CPU arrays
+    static int SIZE = 6; //The amount of territories, for use with CPU arrays
     char cpuVldA[SIZE]; //Holds the valid attacking territories the CPU can use
     char cpuVldD[SIZE]; //Holds the valid defending territories the CPU can use
     int choices; //Used to test the CPU arrays, checking to see if there are any valid choices to make
@@ -69,9 +69,13 @@ int main()
     yWhite = false;
 
     //Random Seed
-    srand(static_cast<int> (seedval));
+    srand(static_cast<int>(seedval));
 
     //Initialize with random dice count between 1 and MaxDice
+    cout<<rand() %6;
+    cout<<rand() %6;
+    cout<<rand() %6;
+    cout<<rand() %6;
     dRed = rand() % maxDice + 1;
     dBlue = rand() % maxDice + 1;
     dYellow = rand() % maxDice + 1;
@@ -398,9 +402,7 @@ int main()
         //Displays what the CPU chose to attack with
         switch (attWith)
         {
-            case '\0':
-                cout << "CPU Had no valid attack option!\n";
-                break;
+
             case 'R':
                 cout << "CPU attacked with Red\n";
                 break;
@@ -419,7 +421,9 @@ int main()
             case 'B':
                 cout << "CPU attacked with Blue\n";
                 break;
-
+            default:
+                cout << "CPU Had no valid attack option!\n";
+                break;
         }
 
         //Check to see if there are any valid territories the CPU can attack
